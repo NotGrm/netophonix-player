@@ -1,0 +1,9 @@
+{{#if playing}}
+  <button {{action pause}}>Pause</button>
+{{else}}
+  <button {{action resume}}>Play</button>
+{{/if}}
+
+{{title}}
+
+Duration: {{format-time duration}}

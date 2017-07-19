@@ -1,24 +1,40 @@
 import Service from "@ember/service";
 import howler from 'npm:howler';
+import { get, getProperties, set } from "@ember/object";
+import { isPresent, isNone, tryInvoke } from "@ember/utils";
 
 export default Service.extend({
   init() {
     this._super(...arguments);
-
-    let howl = new howler.Howl({
-      src: ['/adoprixtoxis/01-LE_NAUFRAGE.mp3']
-    });
-
-    this.set('howl', howl);
   },
 
-  play() {
-    let howl = this.get('howl');
-    howl.play();
+  play(episode) {
+    if(isNone(episode)) {
+      return;
+    }
+
+    let { sound, file } = getProperties(episode, 'sound', 'file');
+    
+    if(isNone(sound)) {
+      sound = new howler.Howl({
+        src: file,
+        onplay: () => {
+          this.set('duration', Math.round(sound.duration()));
+        },
+      });
+
+      set(episode, 'sound', sound);
+    }
+
+    sound.play();
+    set(this, 'sound', sound);
+  },
+
+  pause() {
+    get(this, 'sound').pause();
   },
 
   stop() {
-    let howl = this.get('howl');
-    howl.stop();
+    tryInvoke(get(this, 'sound'), 'stop');
   }
 });
