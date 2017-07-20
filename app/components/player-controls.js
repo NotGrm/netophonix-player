@@ -8,6 +8,7 @@ export default Component.extend({
   playing: computed.alias('playbackService.playing'),
   title: computed.alias('playbackService.title'),
   duration: computed.alias('playbackService.duration'),
+  seek: computed.alias('playbackService.seek'),
 
   resume() {
     let currentTrack = this.get('playbackService.currentTrack');

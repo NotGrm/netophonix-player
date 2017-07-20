@@ -1,9 +1,11 @@
-{{#if playing}}
-  <button {{action pause}}>Pause</button>
-{{else}}
-  <button {{action resume}}>Play</button>
+{{#if playbackService.current}}
+  {{#if playing}}
+    <button {{action pause}}>Pause</button>
+  {{else}}
+    <button {{action resume}}>Play</button>
+  {{/if}}
+
+  <time>{{format-time seek}}</time>
+  {{title}}
+  <progress value={{seek}} max={{duration}}></progress>
 {{/if}}
-
-{{title}}
-
-Duration: {{format-time duration}}

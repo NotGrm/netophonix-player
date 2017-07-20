@@ -20,6 +20,7 @@ export default Service.extend({
         src: file,
         onplay: () => {
           this.set('duration', Math.round(sound.duration()));
+          requestAnimationFrame(this.step.bind(this));
         },
       });
 
@@ -36,5 +37,14 @@ export default Service.extend({
 
   stop() {
     tryInvoke(get(this, 'sound'), 'stop');
+  },
+
+  step() {
+    const sound = get(this, 'sound');
+    this.set('seek', Math.round(sound.seek()));
+
+    if(sound.playing()) {
+      requestAnimationFrame(this.step.bind(this));
+    }
   }
 });

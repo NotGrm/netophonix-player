@@ -7,6 +7,7 @@ export default Service.extend({
   audio: inject(),
 
   duration: computed.alias('audio.duration'),
+  seek: computed.alias('audio.seek'),
   title: computed.alias('current.title'),
   playing: computed.alias('current.playing'),
 
