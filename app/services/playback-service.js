@@ -1,39 +1,31 @@
-import Service from "@ember/service";
-import { inject } from "@ember/service";
-import { computed } from "@ember/object";
+import Service, { inject } from "@ember/service";
+import { computed, getProperties } from "@ember/object";
 import { isPresent } from "@ember/utils";
+import { A } from "@ember/array";
 
 export default Service.extend({
   audio: inject(),
+
+  playlist: A(),
+  index: 0,
 
   duration: computed.alias('audio.duration'),
   seek: computed.alias('audio.seek'),
   title: computed.alias('current.title'),
   playing: computed.alias('current.playing'),
 
-  play(episode) {
+  current: computed('index', 'playlist.[]', function() {
+    const { playlist, index } = getProperties(this, 'playlist', 'index');
+    return playlist.objectAt(index);
+  }),
+
+  play() {
     const audio = this.get('audio');
     const current = this.get('current');
-    episode = episode || current;
-    this.select(episode)
-    if (!episode.get('playing')) {
+
+    if (!current.get('playing')) {
       this.set('playing', true);
-      audio.play(episode);
-    }
-  },
-
-  select(episode) {
-    const audio = this.get('audio');
-    const current = this.get('current');
-
-    if (episode !== current) {
-      audio.stop();
-      
-      if(isPresent(current)) {
-        current.set('playing', false);
-      }
-
-      this.set('current', episode);
+      audio.play(current);
     }
   },
 

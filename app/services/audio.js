@@ -1,42 +1,44 @@
 import Service from "@ember/service";
 import howler from 'npm:howler';
-import { get, getProperties, set } from "@ember/object";
-import { isPresent, isNone, tryInvoke } from "@ember/utils";
+import { get, set } from "@ember/object";
+import { isEqual, isPresent, isNone } from "@ember/utils";
 
 export default Service.extend({
   init() {
     this._super(...arguments);
   },
 
-  play(episode) {
-    if(isNone(episode)) {
-      return;
-    }
+  initSound(file) {
+    let sound = new howler.Howl({
+      src: file,
+      onplay: () => {
+        this.set('duration', Math.round(sound.duration()));
+        requestAnimationFrame(this.step.bind(this));
+      },
+    });
 
-    let { sound, file } = getProperties(episode, 'sound', 'file');
+    return sound;
+  },
+
+  play(track) {
+    const trackFile = get(track, 'file');
     
-    if(isNone(sound)) {
-      sound = new howler.Howl({
-        src: file,
-        onplay: () => {
-          this.set('duration', Math.round(sound.duration()));
-          requestAnimationFrame(this.step.bind(this));
-        },
-      });
+    if(isNone(get(track, 'sound'))) {
+      set(track, 'sound', this.initSound(trackFile));
+    } 
 
-      set(episode, 'sound', sound);
+    const currentSound = get(this, 'sound');
+    const trackSound = get(track, 'sound');
+
+    if(isPresent(currentSound) && !isEqual(currentSound, trackSound)) {
+      currentSound.stop();
     }
 
-    sound.play();
-    set(this, 'sound', sound);
+    set(this, 'sound', trackSound).play();
   },
 
   pause() {
     get(this, 'sound').pause();
-  },
-
-  stop() {
-    tryInvoke(get(this, 'sound'), 'stop');
   },
 
   step() {

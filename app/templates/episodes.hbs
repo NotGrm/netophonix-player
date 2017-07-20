@@ -1,8 +1,8 @@
 <ul>
-  {{#each model as |episode|}}
+  {{#each model as |episode index|}}
     <li>
       {{episode.title}}
-      <button {{action 'play' episode}}>Play</button>
+      <button {{action 'play' index}}>Play</button>
     </li>
   {{/each}}
 </ul>
