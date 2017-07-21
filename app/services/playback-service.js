@@ -1,5 +1,6 @@
 import Service, { inject } from "@ember/service";
 import { computed, get, getProperties } from "@ember/object";
+import { isEqual } from "@ember/utils";
 
 export default Service.extend({
   audio: inject(),
@@ -28,4 +29,14 @@ export default Service.extend({
   pause() {
     get(this, 'audio').pause();
   },
+
+  skip(direction) {
+    if(isEqual(direction, 'prev')) {
+      this.decrementProperty('index');
+    } else {
+      this.incrementProperty('index');
+    } 
+
+    this.play();
+  }
 });

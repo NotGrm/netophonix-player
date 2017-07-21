@@ -23,7 +23,7 @@ export default Service.extend({
       },
       onstop: () => {
         set(track, 'playing', false);
-      },
+      }
     });
 
     return sound;

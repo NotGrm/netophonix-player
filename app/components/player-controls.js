@@ -6,10 +6,11 @@ import { isEqual } from "@ember/utils";
 export default Component.extend({
   playbackService: inject(),
 
-  playing: computed.alias('playbackService.playing'),
-  title: computed.alias('playbackService.title'),
-  duration: computed.alias('playbackService.duration'),
-  seek: computed.alias('playbackService.seek'),
+  current: computed.alias('playbackService.current'),
+  playing: computed.alias('current.playing'),
+  title: computed.alias('current.title'),
+  duration: computed.alias('current.duration'),
+  seek: computed.alias('current.seek'),
 
   resume() {
     get(this, 'playbackService').play();
@@ -21,21 +22,14 @@ export default Component.extend({
 
   skip(direction) {
     const playbackService = get(this, 'playbackService');
-    const { index, playing } = getProperties(playbackService, 'index', 'playing');
+    const index = get(playbackService, 'index');
+    const playlistSize = get(playbackService, 'playlist.length');
     
-    const minIndex = 0;
-    const maxIndex = get(playbackService, 'playlist.length') - 1;
-      
-    if(isEqual(direction, 'prev') && index > minIndex) {
-      playbackService.decrementProperty('index');
-    } 
-    
-    if(isEqual(direction, 'next') && index < maxIndex) {
-      playbackService.incrementProperty('index');
-    }
+    let canGoPrev = 0 < index && direction == 'prev'
+    let canGoNext = index < playlistSize - 1 && direction == 'next'
 
-    if(playing) {
-      playbackService.play();
+    if(canGoPrev || canGoNext) {
+      playbackService.skip(direction);
     }
   }
 });
