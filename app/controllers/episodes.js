@@ -5,8 +5,10 @@ export default Controller.extend({
   playbackService: inject(),
 
   actions: {
-    play(episode) {
-      this.get('playbackService').play(episode);
+    play(index) {
+      this.set('playbackService.playlist', this.get('model'));
+      this.set('playbackService.index', index);
+      this.get('playbackService').play();
     }
   }
 });

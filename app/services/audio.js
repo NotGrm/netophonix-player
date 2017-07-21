@@ -1,50 +1,50 @@
 import Service from "@ember/service";
 import howler from 'npm:howler';
-import { get, getProperties, set } from "@ember/object";
-import { isPresent, isNone, tryInvoke } from "@ember/utils";
+import { get, set } from "@ember/object";
+import { isEqual, isPresent, isNone } from "@ember/utils";
 
 export default Service.extend({
   init() {
     this._super(...arguments);
   },
 
-  play(episode) {
-    if(isNone(episode)) {
-      return;
+  initSound(track) {
+    const file = get(track, 'file');
+
+    let sound = new howler.Howl({
+      src: file,
+      onplay: () => {
+        set(track, 'playing', true);
+        set(track, 'duration', Math.round(sound.duration()));
+        requestAnimationFrame(track.step.bind(track));
+      },
+      onpause: () => {
+        set(track, 'playing', false);
+      },
+      onstop: () => {
+        set(track, 'playing', false);
+      },
+    });
+
+    return sound;
+  },
+
+  play(track) {   
+    if(isNone(get(track, 'sound'))) {
+      set(track, 'sound', this.initSound(track));
+    } 
+
+    const currentSound = get(this, 'sound');
+    const trackSound = get(track, 'sound');
+
+    if(isPresent(currentSound) && !isEqual(currentSound, trackSound)) {
+      currentSound.stop();
     }
 
-    let { sound, file } = getProperties(episode, 'sound', 'file');
-    
-    if(isNone(sound)) {
-      sound = new howler.Howl({
-        src: file,
-        onplay: () => {
-          this.set('duration', Math.round(sound.duration()));
-          requestAnimationFrame(this.step.bind(this));
-        },
-      });
-
-      set(episode, 'sound', sound);
-    }
-
-    sound.play();
-    set(this, 'sound', sound);
+    set(this, 'sound', trackSound).play();
   },
 
   pause() {
     get(this, 'sound').pause();
   },
-
-  stop() {
-    tryInvoke(get(this, 'sound'), 'stop');
-  },
-
-  step() {
-    const sound = get(this, 'sound');
-    this.set('seek', Math.round(sound.seek()));
-
-    if(sound.playing()) {
-      requestAnimationFrame(this.step.bind(this));
-    }
-  }
 });
