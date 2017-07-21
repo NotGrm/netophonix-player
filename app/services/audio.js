@@ -5,10 +5,16 @@ import { isEqual, isPresent, isNone } from "@ember/utils";
 
 export default Service.extend({
   mute: false,
+  volume: 1,
 
   muteChanged: observer('mute', function() {
     const { sound, mute } = getProperties(this, 'sound', 'mute');
     sound.mute(mute);
+  }),
+
+  volumeChanged: observer('volume', function() {
+    const { sound, volume } = getProperties(this, 'sound', 'volume');
+    sound.volume(volume)
   }),
 
   initSound(track) {
@@ -16,6 +22,8 @@ export default Service.extend({
 
     let sound = new howler.Howl({
       src: file,
+      mute: get(this, 'mute'),
+      volume: get(this, 'volume'),
       onplay: () => {
         set(track, 'playing', true);
         set(track, 'duration', Math.round(sound.duration()));
