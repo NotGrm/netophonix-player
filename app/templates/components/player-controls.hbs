@@ -20,11 +20,11 @@
     <li>
       {{#if (eq index playbackService.index)}}
         <strong>
-          <span>{{index}}</span>
+          <span>{{format-index index}}</span>
           <span>{{episode.title}}</span>
         </strong>
       {{else}}
-        <span>{{index}}</span>
+        <span>{{format-index index}}</span>
         <span>{{episode.title}}</span>
       {{/if}}
     </li>

@@ -8,23 +8,30 @@ export default Service.extend({
     this._super(...arguments);
   },
 
-  initSound(file) {
+  initSound(track) {
+    const file = get(track, 'file');
+
     let sound = new howler.Howl({
       src: file,
       onplay: () => {
-        this.set('duration', Math.round(sound.duration()));
-        requestAnimationFrame(this.step.bind(this));
+        set(track, 'playing', true);
+        set(track, 'duration', Math.round(sound.duration()));
+        requestAnimationFrame(track.step.bind(track));
+      },
+      onpause: () => {
+        set(track, 'playing', false);
+      },
+      onstop: () => {
+        set(track, 'playing', false);
       },
     });
 
     return sound;
   },
 
-  play(track) {
-    const trackFile = get(track, 'file');
-    
+  play(track) {   
     if(isNone(get(track, 'sound'))) {
-      set(track, 'sound', this.initSound(trackFile));
+      set(track, 'sound', this.initSound(track));
     } 
 
     const currentSound = get(this, 'sound');
@@ -40,13 +47,4 @@ export default Service.extend({
   pause() {
     get(this, 'sound').pause();
   },
-
-  step() {
-    const sound = get(this, 'sound');
-    this.set('seek', Math.round(sound.seek()));
-
-    if(sound.playing()) {
-      requestAnimationFrame(this.step.bind(this));
-    }
-  }
 });
