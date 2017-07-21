@@ -11,6 +11,12 @@
 <time>{{format-time seek}}</time>
 {{title}}
 
+{{#if playbackService.mute}}
+  <button {{action mute false}}>Unmute</button>
+{{else}}
+  <button {{action mute true}}>Mute</button>
+{{/if}}
+
 <hr>
 
 <h2>Queue</h2>

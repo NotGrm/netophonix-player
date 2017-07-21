@@ -8,6 +8,7 @@ export default Service.extend({
   playlist: [],
   index: 0,
 
+  mute: computed.alias('audio.mute'),
   seek: computed.alias('current.seek'),
   duration: computed.alias('current.duration'),
   title: computed.alias('current.title'),

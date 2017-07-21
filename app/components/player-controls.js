@@ -1,7 +1,6 @@
 import Component from "@ember/component";
 import { inject } from "@ember/service";
-import { computed, get, getProperties } from "@ember/object";
-import { isEqual } from "@ember/utils";
+import { computed, get, set } from "@ember/object";
 
 export default Component.extend({
   playbackService: inject(),
@@ -20,11 +19,15 @@ export default Component.extend({
     get(this, 'playbackService').pause();
   },
 
+  mute(muted) {
+    set(this, 'playbackService.mute', muted);
+  },
+
   skip(direction) {
     const playbackService = get(this, 'playbackService');
     const index = get(playbackService, 'index');
     const playlistSize = get(playbackService, 'playlist.length');
-    
+
     let canGoPrev = 0 < index && direction == 'prev'
     let canGoNext = index < playlistSize - 1 && direction == 'next'
 

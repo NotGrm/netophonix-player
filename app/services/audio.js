@@ -1,12 +1,15 @@
 import Service from "@ember/service";
 import howler from 'npm:howler';
-import { get, set } from "@ember/object";
+import { get, getProperties, set, observer } from "@ember/object";
 import { isEqual, isPresent, isNone } from "@ember/utils";
 
 export default Service.extend({
-  init() {
-    this._super(...arguments);
-  },
+  mute: false,
+
+  muteChanged: observer('mute', function() {
+    const { sound, mute } = getProperties(this, 'sound', 'mute');
+    sound.mute(mute);
+  }),
 
   initSound(track) {
     const file = get(track, 'file');
@@ -29,10 +32,10 @@ export default Service.extend({
     return sound;
   },
 
-  play(track) {   
+  play(track) {
     if(isNone(get(track, 'sound'))) {
       set(track, 'sound', this.initSound(track));
-    } 
+    }
 
     const currentSound = get(this, 'sound');
     const trackSound = get(track, 'sound');
