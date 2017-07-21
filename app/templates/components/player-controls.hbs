@@ -1,11 +1,32 @@
-{{#if playbackService.current}}
-  {{#if playing}}
-    <button {{action pause}}>Pause</button>
-  {{else}}
-    <button {{action resume}}>Play</button>
-  {{/if}}
+<button {{action skip 'prev'}}>Previous</button>
 
-  <time>{{format-time seek}}</time>
-  {{title}}
-  <progress value={{seek}} max={{duration}}></progress>
+{{#if playing}}
+  <button {{action pause}}>Pause</button>
+{{else}}
+  <button {{action resume}}>Play</button>
 {{/if}}
+
+<button {{action skip 'next'}}>Next</button>
+
+<time>{{format-time seek}}</time>
+{{title}}
+
+<hr>
+
+<h2>Queue</h2>
+
+<ul>
+  {{#each playbackService.playlist as |episode index|}}
+    <li>
+      {{#if (eq index playbackService.index)}}
+        <strong>
+          <span>{{format-index index}}</span>
+          <span>{{episode.title}}</span>
+        </strong>
+      {{else}}
+        <span>{{format-index index}}</span>
+        <span>{{episode.title}}</span>
+      {{/if}}
+    </li>
+  {{/each}}
+</ul>
