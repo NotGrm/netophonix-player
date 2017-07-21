@@ -15,18 +15,16 @@
 
 <h2>Queue</h2>
 
-<ul>
+<ol>
   {{#each playbackService.playlist as |episode index|}}
     <li>
       {{#if (eq index playbackService.index)}}
         <strong>
-          <span>{{format-index index}}</span>
           <span>{{episode.title}}</span>
         </strong>
       {{else}}
-        <span>{{format-index index}}</span>
         <span>{{episode.title}}</span>
       {{/if}}
     </li>
   {{/each}}
-</ul>
+</ol>

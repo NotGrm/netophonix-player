@@ -1,10 +1,10 @@
-<ul>
+<ol>
   {{#each model as |episode index|}}
     <li>
       {{episode.title}}
       <button {{action 'play' index}}>Play</button>
     </li>
   {{/each}}
-</ul>
+</ol>
 
 {{outlet}}
