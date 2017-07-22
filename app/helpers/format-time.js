@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
-export function formatTime(secs) {
+export function formatTime(time) {
+  let secs = Math.floor(time / 1000);
   let minutes = Math.floor(secs / 60) || 0;
   let seconds = (secs - minutes * 60) || 0;
 

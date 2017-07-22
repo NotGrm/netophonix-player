@@ -8,7 +8,15 @@
 
 <button {{action skip 'next'}}>Next</button>
 
-<time>{{format-time seek}}</time>
+<time>{{format-time playbackService.position}}</time>
+<input 
+  type="range" 
+  value={{playbackService.position}} 
+  max={{playbackService.duration}}
+  step=1000
+  disabled>
+<time>{{format-time playbackService.duration}}</time>
+
 {{title}}
 
 {{#if playbackService.mute}}
@@ -20,10 +28,8 @@
 <input 
   type="range" 
   value={{playbackService.volume}} 
-  max="1" min="0" step="0.05" 
+  max="100" step="1" 
   oninput={{action (mut playbackService.volume) value="target.value"}}>
-
-{{playbackService.volume}}
 
 <hr>
 

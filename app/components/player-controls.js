@@ -1,15 +1,12 @@
 import Component from "@ember/component";
 import { inject } from "@ember/service";
-import { computed, get, set } from "@ember/object";
+import { computed, get } from "@ember/object";
 
 export default Component.extend({
   playbackService: inject(),
 
   current: computed.alias('playbackService.current'),
-  playing: computed.alias('current.playing'),
   title: computed.alias('current.title'),
-  duration: computed.alias('current.duration'),
-  seek: computed.alias('current.seek'),
 
   resume() {
     get(this, 'playbackService').play();
@@ -19,8 +16,8 @@ export default Component.extend({
     get(this, 'playbackService').pause();
   },
 
-  mute(muted) {
-    set(this, 'playbackService.mute', muted);
+  mute() {
+    get(this, 'playbackService').toggleMute();
   },
 
   skip(direction) {
@@ -34,5 +31,5 @@ export default Component.extend({
     if(canGoPrev || canGoNext) {
       playbackService.skip(direction);
     }
-  }
+  },
 });

@@ -3,18 +3,19 @@ import { computed, get, getProperties } from "@ember/object";
 import { isEqual } from "@ember/utils";
 
 export default Service.extend({
-  audio: inject(),
+  hifi: inject(),
 
   playlist: [],
   index: 0,
 
-  mute: computed.alias('audio.mute'),
-  volume: computed.alias('audio.volume'),
+  mute: computed.alias('hifi.isMuted'),
+  volume: computed.alias('hifi.volume'),
+  position: computed.alias('hifi.position'),
+  duration: computed.alias('hifi.duration'),
+  playing: computed.alias('hifi.isPlaying'),
+  percentLoaded: computed.alias('hifi.percentLoaded'),
   
-  seek: computed.alias('current.seek'),
-  duration: computed.alias('current.duration'),
   title: computed.alias('current.title'),
-  playing: computed.alias('current.playing'),
 
   current: computed('index', 'playlist.[]', function() {
     const { playlist, index } = getProperties(this, 'playlist', 'index');
@@ -22,15 +23,16 @@ export default Service.extend({
   }),
 
   play() {
-    const { audio, current } = getProperties(this, 'audio', 'current');
-
-    if (!get(current, 'playing')) {
-      audio.play(current);
-    }
+    const { hifi, current } = getProperties(this, 'hifi', 'current');
+    hifi.play(get(current, 'file'));
   },
 
   pause() {
-    get(this, 'audio').pause();
+    get(this, 'hifi').pause();
+  },
+
+  toggleMute() {
+    get(this, 'hifi').toggleMute();
   },
 
   skip(direction) {
