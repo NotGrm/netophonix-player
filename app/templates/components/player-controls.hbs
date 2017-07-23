@@ -1,50 +1,62 @@
-<button {{action skip 'prev'}}>Previous</button>
+<div class="player__controls">
+  <button {{action skip 'prev'}}>Previous</button>
 
-{{#if hifi.isPlaying}}
-  <button {{action pause}}>Pause</button>
-{{else}}
-  <button {{action play}}>Play</button>
-{{/if}}
+  <button {{action togglePause}}>
+    {{if hifi.isPlaying 'Pause' 'Play'}}
+  </button>
 
-<button {{action skip 'next'}}>Next</button>
+  <button {{action skip 'next'}}>Next</button>
+</div>
 
-<time>{{format-time hifi.position}}</time>
-<input 
-  type="range" 
-  value={{hifi.position}} 
-  max={{hifi.duration}}
-  step=1000
-  disabled>
-<time>{{format-time hifi.duration}}</time>
+<div class="player__progress">
+  <time>{{format-time hifi.position}}</time>
+  <input 
+    type="range" 
+    value={{hifi.position}} 
+    max={{hifi.duration}}
+    step=1000
+    disabled>
+  <time>{{format-time hifi.duration}}</time>
+</div>
 
-{{title}}
+<div class="player__track">
+  {{title}}
+</div>
 
-{{#if hifi.isMuted}}
-  <button {{action mute false}}>Unmute</button>
-{{else}}
-  <button {{action mute true}}>Mute</button>
-{{/if}}
+<div class="player__volume">
+  <button {{action toggleMute}}>
+    {{if hifi.isMuted 'Unmute' 'Mute'}}
+  </button>
 
-<input 
-  type="range" 
-  value={{hifi.volume}} 
-  max="100" step="1" 
-  oninput={{action (mut hifi.volume) value="target.value"}}>
+  <input value={{hifi.volume}} 
+    type="range" 
+    max="100" step="1" 
+    oninput={{action (mut hifi.volume) value="target.value"}}>
+</div>
+
+<div class="player__queue">
+  <button {{action toggleQueue}}>
+    {{if showQueue 'Hide queue' 'Show queue'}}
+  </button>
+</div>
 
 <hr>
 
-<h2>Queue</h2>
-
-<ol>
-  {{#each queue.tracks as |track index|}}
-    <li>
-      {{#if (eq index queue.index)}}
-        <strong>
+{{#if showQueue}}
+<div class="queue">
+  <h2>Queue</h2>
+  <ol>
+    {{#each queue.tracks as |track index|}}
+      <li>
+        {{#if (eq index queue.index)}}
+          <strong>
+            <span>{{track.title}}</span>
+          </strong>
+        {{else}}
           <span>{{track.title}}</span>
-        </strong>
-      {{else}}
-        <span>{{track.title}}</span>
-      {{/if}}
-    </li>
-  {{/each}}
-</ol>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ol>
+</div>
+{{/if}}

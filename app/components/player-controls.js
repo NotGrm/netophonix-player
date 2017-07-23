@@ -3,11 +3,19 @@ import { inject } from "@ember/service";
 import { computed, get, getProperties } from "@ember/object";
 
 export default Component.extend({
+  classNames: ['player'],
+
   hifi: inject(),
   queue: inject(),
 
+  showQueue: false,
+
   current: computed.oneWay('queue.current'),
   title: computed.alias('current.title'),
+
+  togglePause() {
+    get(this, 'hifi').togglePause();
+  },
 
   play() {
     get(this, 'hifi').togglePause();
@@ -17,8 +25,12 @@ export default Component.extend({
     get(this, 'hifi').togglePause();
   },
 
-  mute() {
+  toggleMute() {
     get(this, 'hifi').toggleMute();
+  },
+
+  toggleQueue() {
+    this.toggleProperty('showQueue');
   },
 
   skip(direction) {
