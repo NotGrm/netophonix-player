@@ -1,25 +1,25 @@
 <button {{action skip 'prev'}}>Previous</button>
 
-{{#if playbackService.playing}}
+{{#if hifi.isPlaying}}
   <button {{action pause}}>Pause</button>
 {{else}}
-  <button {{action resume}}>Play</button>
+  <button {{action play}}>Play</button>
 {{/if}}
 
 <button {{action skip 'next'}}>Next</button>
 
-<time>{{format-time playbackService.position}}</time>
+<time>{{format-time hifi.position}}</time>
 <input 
   type="range" 
-  value={{playbackService.position}} 
-  max={{playbackService.duration}}
+  value={{hifi.position}} 
+  max={{hifi.duration}}
   step=1000
   disabled>
-<time>{{format-time playbackService.duration}}</time>
+<time>{{format-time hifi.duration}}</time>
 
 {{title}}
 
-{{#if playbackService.mute}}
+{{#if hifi.isMuted}}
   <button {{action mute false}}>Unmute</button>
 {{else}}
   <button {{action mute true}}>Mute</button>
@@ -27,23 +27,23 @@
 
 <input 
   type="range" 
-  value={{playbackService.volume}} 
+  value={{hifi.volume}} 
   max="100" step="1" 
-  oninput={{action (mut playbackService.volume) value="target.value"}}>
+  oninput={{action (mut hifi.volume) value="target.value"}}>
 
 <hr>
 
 <h2>Queue</h2>
 
 <ol>
-  {{#each playbackService.playlist as |episode index|}}
+  {{#each queue.tracks as |track index|}}
     <li>
-      {{#if (eq index playbackService.index)}}
+      {{#if (eq index queue.index)}}
         <strong>
-          <span>{{episode.title}}</span>
+          <span>{{track.title}}</span>
         </strong>
       {{else}}
-        <span>{{episode.title}}</span>
+        <span>{{track.title}}</span>
       {{/if}}
     </li>
   {{/each}}

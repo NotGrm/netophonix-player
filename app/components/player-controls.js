@@ -1,35 +1,42 @@
 import Component from "@ember/component";
 import { inject } from "@ember/service";
-import { computed, get } from "@ember/object";
+import { computed, get, getProperties } from "@ember/object";
 
 export default Component.extend({
-  playbackService: inject(),
+  hifi: inject(),
+  queue: inject(),
 
-  current: computed.alias('playbackService.current'),
+  current: computed.oneWay('queue.current'),
   title: computed.alias('current.title'),
 
-  resume() {
-    get(this, 'playbackService').play();
+  play() {
+    get(this, 'hifi').togglePause();
   },
 
   pause() {
-    get(this, 'playbackService').pause();
+    get(this, 'hifi').togglePause();
   },
 
   mute() {
-    get(this, 'playbackService').toggleMute();
+    get(this, 'hifi').toggleMute();
   },
 
   skip(direction) {
-    const playbackService = get(this, 'playbackService');
-    const index = get(playbackService, 'index');
-    const playlistSize = get(playbackService, 'playlist.length');
+    const queue = get(this, 'queue');
+    const { hasPrevious, hasNext } = getProperties(queue, 'hasPrevious', 'hasNext');
 
-    let canGoPrev = 0 < index && direction == 'prev'
-    let canGoNext = index < playlistSize - 1 && direction == 'next'
-
-    if(canGoPrev || canGoNext) {
-      playbackService.skip(direction);
+    if(hasPrevious && direction == 'prev') {
+      this.decrementProperty('queue.index');
+    } else if(hasNext && direction == 'next') {
+      this.incrementProperty('queue.index');
     }
+
+    let file = get(this, 'current.file');
+
+    this.get('hifi').load(file).then(({sound}) => {
+      sound.play({
+        position: 0
+      });
+    });
   },
 });
