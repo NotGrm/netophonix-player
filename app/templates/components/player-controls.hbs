@@ -1,62 +1,87 @@
-<div class="player__controls">
-  <button {{action skip 'prev'}}>Previous</button>
-
-  <button {{action togglePause}}>
-    {{if hifi.isPlaying 'Pause' 'Play'}}
-  </button>
-
-  <button {{action skip 'next'}}>Next</button>
+<div class="level">
+  <div class="level-left">
+    <div class="level-item player__controls">
+      <div class="field is-grouped">
+        <p class="control">
+          <button class="button is-small" {{action skip 'prev'}} disabled={{not queue.hasPrevious}}>Prev</button>
+        </p>
+        <p class="control">
+          <button class="button is-small is-primary" {{action togglePause}}>
+            {{if hifi.isPlaying 'Pause' 'Play'}}
+          </button>
+        </p>
+        <p class="control">
+          <button class="button is-small" {{action skip 'next'}} disabled={{not queue.hasNext}}>Next</button>
+        </p>
+      </div>
+    </div>
+    <div class="level-item">
+      <time class="label is-small">{{format-time hifi.position}}</time>
+    </div>
+    <div class="level-item player__progress">
+      <progress class="progress is-primary is-small" value={{progression}} max="100">{{progression}}%</progress>
+    </div>
+    <div class="level-item">
+      <time class="label is-small">{{format-time hifi.duration}}</time>
+    </div>
+    <div class="level-item">
+      <div class="field is-grouped player__volume">
+        <div class="control">
+          <input value={{hifi.volume}} 
+            type="range" 
+            class="input is-primary"
+            max="100" step="1" 
+            oninput={{action (mut hifi.volume) value="target.value"}}>
+        </div>
+        <div class="control">
+          <button class="button is-small" {{action toggleMute}}>
+            {{if hifi.isMuted 'Unmute' 'Mute'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="level-right">
+    <div class="level-item">
+      <article class="media player__track">
+        <figure class="media-left">
+          <img src="http://bulma.io/images/placeholders/48x48.png">
+        </figure>
+        <div class="media-content">
+          <div class="content is-small">
+            <p>
+              Adoprixtoxis <br>
+              <strong>{{title}}</strong>
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="level-item">
+      <button class="button is-small" {{action toggleQueue}}>Queue</button>
+      <div class="field is-grouped">
+        <p class="control player__queue">
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="player__progress">
-  <time>{{format-time hifi.position}}</time>
-  <input 
-    type="range" 
-    value={{hifi.position}} 
-    max={{hifi.duration}}
-    step=1000
-    disabled>
-  <time>{{format-time hifi.duration}}</time>
-</div>
-
-<div class="player__track">
-  {{title}}
-</div>
-
-<div class="player__volume">
-  <button {{action toggleMute}}>
-    {{if hifi.isMuted 'Unmute' 'Mute'}}
-  </button>
-
-  <input value={{hifi.volume}} 
-    type="range" 
-    max="100" step="1" 
-    oninput={{action (mut hifi.volume) value="target.value"}}>
-</div>
-
-<div class="player__queue">
-  <button {{action toggleQueue}}>
-    {{if showQueue 'Hide queue' 'Show queue'}}
-  </button>
-</div>
-
-<hr>
 
 {{#if showQueue}}
-<div class="queue">
-  <h2>Queue</h2>
-  <ol>
-    {{#each queue.tracks as |track index|}}
-      <li>
-        {{#if (eq index queue.index)}}
-          <strong>
+  <div class="queue">
+    <h2>Queue</h2>
+    <ol>
+      {{#each queue.tracks as |track index|}}
+        <li>
+          {{#if (eq index queue.index)}}
+            <strong>
+              <span>{{track.title}}</span>
+            </strong>
+          {{else}}
             <span>{{track.title}}</span>
-          </strong>
-        {{else}}
-          <span>{{track.title}}</span>
-        {{/if}}
-      </li>
-    {{/each}}
-  </ol>
-</div>
+          {{/if}}
+        </li>
+      {{/each}}
+    </ol>
+  </div>
 {{/if}}

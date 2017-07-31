@@ -13,6 +13,16 @@ export default Component.extend({
   current: computed.oneWay('queue.current'),
   title: computed.alias('current.title'),
 
+  progression: computed('hifi.position', 'hifi.duration', function() {
+    const position = get(this, 'hifi.position');
+    const duration = get(this, 'hifi.duration');
+    if(position === undefined || duration === undefined) {
+      return 0;
+    } else {
+      return Math.floor(position * 100 / duration);
+    }
+  }),
+
   togglePause() {
     get(this, 'hifi').togglePause();
   },

@@ -1,0 +1,37 @@
+@import "node_modules/bulma/bulma";
+@import 'slider';
+
+body > .ember-view {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1 0 auto;
+}
+
+footer.box {
+  border-radius: 0;
+  padding: .5rem 0;
+}
+
+.player {
+  .level-left {
+    flex-grow: 1;
+    margin-right: 1.5rem
+  }
+
+  &__progress,  {
+    flex-grow: 1;
+  }
+
+  &__volume {
+    align-items: center;
+  }
+
+  &__track {
+    min-width: 300px;
+    max-width: 300px;
+  }
+}
