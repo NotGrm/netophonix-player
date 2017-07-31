@@ -3,7 +3,11 @@
     {{#each model as |episode index|}}
       <li>
         {{episode.title}}
-        <button {{action 'play' index}}>Play</button>
+        <button class="button is-primary is-small" {{action 'play' index}}>
+          <span class="icon is-small">
+            {{fa-icon 'play'}}
+          </span>
+        </button>
       </li>
     {{/each}}
   </ol>

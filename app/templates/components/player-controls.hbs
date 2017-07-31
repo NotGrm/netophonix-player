@@ -3,26 +3,36 @@
     <div class="level-item player__controls">
       <div class="field is-grouped">
         <p class="control">
-          <button class="button is-small" {{action skip 'prev'}} disabled={{not queue.hasPrevious}}>Prev</button>
-        </p>
-        <p class="control">
-          <button class="button is-small is-primary" {{action togglePause}}>
-            {{if hifi.isPlaying 'Pause' 'Play'}}
+          <button class="button" {{action skip 'prev'}} disabled={{not queue.hasPrevious}}>
+            <span class="icon">
+              {{fa-icon 'step-backward'}}
+            </span>
           </button>
         </p>
         <p class="control">
-          <button class="button is-small" {{action skip 'next'}} disabled={{not queue.hasNext}}>Next</button>
+          <button class="button is-primary" {{action togglePause}}>
+            <span class="icon">
+              {{fa-icon (if hifi.isPlaying 'pause' 'play')}}
+            </span>
+          </button>
+        </p>
+        <p class="control">
+          <button class="button" {{action skip 'next'}} disabled={{not queue.hasNext}}>
+            <span class="icon">
+              {{fa-icon 'step-forward'}}
+            </span>
+          </button>
         </p>
       </div>
     </div>
     <div class="level-item">
-      <time class="label is-small">{{format-time hifi.position}}</time>
+      <time class="label">{{format-time hifi.position}}</time>
     </div>
     <div class="level-item player__progress">
-      <progress class="progress is-primary is-small" value={{progression}} max="100">{{progression}}%</progress>
+      <progress class="progress is-primary" value={{progression}} max="100">{{progression}}%</progress>
     </div>
     <div class="level-item">
-      <time class="label is-small">{{format-time hifi.duration}}</time>
+      <time class="label">{{format-time hifi.duration}}</time>
     </div>
     <div class="level-item">
       <div class="field is-grouped player__volume">
@@ -34,13 +44,16 @@
             oninput={{action (mut hifi.volume) value="target.value"}}>
         </div>
         <div class="control">
-          <button class="button is-small" {{action toggleMute}}>
-            {{if hifi.isMuted 'Unmute' 'Mute'}}
+          <button class="button" {{action toggleMute}}>
+            <span class="icon">
+              {{fa-icon (if hifi.isMuted 'volume-off' 'volume-up')}}
+            </span>
           </button>
         </div>
       </div>
     </div>
   </div>
+
   <div class="level-right">
     <div class="level-item">
       <article class="media player__track">
@@ -58,11 +71,11 @@
       </article>
     </div>
     <div class="level-item">
-      <button class="button is-small" {{action toggleQueue}}>Queue</button>
-      <div class="field is-grouped">
-        <p class="control player__queue">
-        </p>
-      </div>
+      <button class="button" {{action toggleQueue}}>
+        <span class="icon">
+          {{fa-icon 'list'}}
+        </span>
+      </button>
     </div>
   </div>
 </div>
