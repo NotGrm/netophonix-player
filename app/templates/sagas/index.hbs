@@ -1,0 +1,7 @@
+<div class="content">
+  <ul>
+    {{#each model as |saga|}}
+      <li>{{#link-to 'sagas.show' saga}}{{saga.name}}{{/link-to}}</li>
+    {{/each}}
+  </ul>
+</div>
