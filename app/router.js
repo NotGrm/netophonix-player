@@ -8,7 +8,9 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('episodes');
-  this.route('sagas');
+  this.route('sagas', function() {
+    this.route('show', { path: '/:saga_id'});
+  });
 });
 
 export default Router;

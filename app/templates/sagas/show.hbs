@@ -1,0 +1,22 @@
+<section>
+  <div class="content">
+      <h1>{{model.name}}</h1>
+      <p>{{model.synopsis}}</p>
+
+      <dl>
+        <dt>Status:</dt>
+        <dd>{{model.status}}</dd>
+        <dt>Created at:</dt>
+        <dd>{{model.createdAt}}</dd>
+        <dt>Genre:</dt>
+        <dd>{{model.genre}}</dd>
+        <dt>Website:</dt>
+        <dd><a href={{model.website}} target="_blank">{{model.website}}</a></dd>
+      </dl>
+  </div>
+</section>
+<section>
+
+</section>
+
+{{outlet}}
