@@ -1,13 +1,7 @@
-import EmberObject, { get, set } from "@ember/object";
+import DS from 'ember-data';
 
-export default EmberObject.extend({
-  step() {
-    const sound = get(this, 'sound');
-    set(this, 'seek', Math.round(sound.seek()));
-
-    if(sound.playing()) {
-      requestAnimationFrame(this.step.bind(this));
-    }
-  }
-
+export default DS.Model.extend({
+  title: DS.attr('string'),
+  src: DS.attr('string'),
+  saga: DS.belongsTo('saga')
 });
