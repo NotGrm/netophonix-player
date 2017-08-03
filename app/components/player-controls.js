@@ -54,7 +54,7 @@ export default Component.extend({
       this.incrementProperty('queue.index');
     }
 
-    let file = get(this, 'current.file');
+    let file = get(this, 'current.src');
 
     this.get('hifi').load(file).then(({sound}) => {
       sound.play({

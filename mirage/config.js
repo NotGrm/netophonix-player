@@ -26,4 +26,7 @@ export default function() {
 
   this.get('/sagas');
   this.get('/sagas/:id');
+
+  this.get('/episodes');
+  this.get('/episodes/:id');
 }

@@ -1,0 +1,15 @@
+<div class="content">
+  <ol>
+    {{#each episodes as |episode index|}}
+      <li>
+        {{episode.title}}
+
+        <button class="button is-primary is-small" {{action play index}}>
+          <span class="icon is-small">
+            {{fa-icon 'play'}}
+          </span>
+        </button>
+      </li>
+    {{/each}}
+  </ol>
+</div>
