@@ -9,6 +9,7 @@ body > .ember-view {
 
 .main {
   flex: 1 0 auto;
+  margin-top: 20px;
 }
 
 footer.box {
@@ -34,4 +35,12 @@ footer.box {
     min-width: 300px;
     max-width: 300px;
   }
+}
+
+.saga-tile {
+  @extend .tile;
+  @extend .is-child;
+  @extend .notification;
+    
+  cursor: pointer;
 }
