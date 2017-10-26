@@ -15,13 +15,13 @@ const ParentTileComponent = Component.extend({
     return '';
   }),
 
-  objects: computed('array', 'indices', function() {
-    const {array, indices} = getProperties(this, 'array', 'indices');
+  objects: computed('array', 'index', function() {
+    const {array, index} = getProperties(this, 'array', 'index');
 
-    if(Number.isInteger(indices)) {
-      return array.objectAt(indices);
+    if(Number.isInteger(index)) {
+      return array.objectAt(index);
     } else {
-      return indices.map(i => {
+      return index.map(i => {
         return array.objectAt(i);
       })
     }
@@ -29,7 +29,7 @@ const ParentTileComponent = Component.extend({
 });
 
 ParentTileComponent.reopenClass({
-  positionalParams: ['array']
+  positionalParams: ['array', 'index']
 });
 
 export default ParentTileComponent;
