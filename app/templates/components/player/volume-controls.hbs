@@ -1,0 +1,27 @@
+{{!-- {{#if isHovered}}
+  <div class="control">
+    <input value={{volume}} 
+      type="range" 
+      class="input is-primary"
+      max="100" step="1" 
+      oninput={{action onvolumechange value="target.value"}}>
+  </div>
+{{/if}} --}}
+<div class="control">
+  <button class="button" {{action onmutechange}}>
+    <span class="icon">
+      {{fa-icon (if muted 'volume-off' 'volume-up')}}
+    </span>
+  </button>
+
+  {{#ember-popover}}
+    <input value={{volume}}
+      class="slider is-fullwidth is-primary" 
+      type="range" 
+      step="1"
+      max="100" 
+      orient="vertical"
+      style="width:.5rem;"
+      oninput={{action onvolumechange value="target.value"}}>
+  {{/ember-popover}}
+</div>

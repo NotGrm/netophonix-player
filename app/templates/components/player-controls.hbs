@@ -1,100 +1,120 @@
-<div class="level">
-  <div class="level-left">
-    <div class="level-item player__controls">
-      <div class="field is-grouped">
-        <p class="control">
-          <button class="button" {{action skip 'prev'}} disabled={{not queue.hasPrevious}}>
-            <span class="icon">
-              {{fa-icon 'step-backward'}}
-            </span>
-          </button>
-        </p>
-        <p class="control">
-          <button class="button is-primary" {{action togglePause}}>
-            <span class="icon">
-              {{fa-icon (if hifi.isPlaying 'pause' 'play')}}
-            </span>
-          </button>
-        </p>
-        <p class="control">
-          <button class="button" {{action skip 'next'}} disabled={{not queue.hasNext}}>
-            <span class="icon">
-              {{fa-icon 'step-forward'}}
-            </span>
-          </button>
-        </p>
-      </div>
-    </div>
-    <div class="level-item">
-      <time class="label">{{format-time hifi.position}}</time>
-    </div>
-    <div class="level-item player__progress">
-      <progress class="progress is-primary" value={{progression}} max="100">{{progression}}%</progress>
-    </div>
-    <div class="level-item">
-      <time class="label">{{format-time hifi.duration}}</time>
-    </div>
-    <div class="level-item">
-      <div class="field is-grouped player__volume">
-        <div class="control">
-          <input value={{hifi.volume}} 
-            type="range" 
-            class="input is-primary"
-            max="100" step="1" 
-            oninput={{action (mut hifi.volume) value="target.value"}}>
-        </div>
-        <div class="control">
-          <button class="button" {{action toggleMute}}>
-            <span class="icon">
-              {{fa-icon (if hifi.isMuted 'volume-off' 'volume-up')}}
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="level-right">
-    <div class="level-item">
-      <article class="media player__track">
-        <figure class="media-left">
-          <img src="http://bulma.io/images/placeholders/48x48.png">
-        </figure>
-        <div class="media-content">
-          <div class="content is-small">
-            <p>
-              Adoprixtoxis <br>
-              <strong>{{title}}</strong>
-            </p>
+<div class="container">
+  {{#if showQueue}}
+    <div class="card player__queue">
+      <header class="card-header">
+        <p class="card-header-title">Queue</p>
+        <a class="card-header-icon" {{action hideQueue}}>
+          <span class="icon is-small">
+            {{fa-icon 'close'}}
+          </span>
+        </a>
+      </header>
+      <div class="card-content {{if queue.tracks 'is-paddingless'}}">
+        {{#each queue.tracks as |track index|}}
+          <div 
+            class="queue__track {{if (eq index queue.index) 'queue__track--current'}}"
+            {{action skipTo index}}>
+            <div class="media is-paddingless">
+              <figure class="media-left">
+                <p class="image is-32x32 has-text-centered">
+                  <img src="http://bulma.io/images/placeholders/32x32.png">
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content is-small">
+                  <p>
+                    Adoprixtoxis <br>
+                    <strong>{{track.title}}</strong>
+                  </p>
+                </div>
+              </div>
+              <div class="media-right">
+                <button class="button is-primary is-small" {{action 'play' index}}>
+                  <span class="icon is-small">
+                    {{fa-icon 'play'}}
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </article>
+        {{else}}
+          <p>Queue is empty for the moment</p>
+        {{/each}}
+      </div>
+    </div> 
+  {{/if}}
+
+  <div class="level is-mobile">
+    <div class="level-left">
+      <div class="level-item">
+        <article class="media player__track">
+          <figure class="media-left">
+            <p class="image is-48x48">
+              <img src="http://bulma.io/images/placeholders/48x48.png">
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content is-small">
+              <p>
+                Adoprixtoxis <br>
+                <strong>{{title}}</strong>
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="level-item is-hidden-mobile">
+        <button class="button" {{action toggleQueue}}>
+          <span class="icon">
+            {{fa-icon 'list'}}
+          </span>
+        </button>
+      </div>
     </div>
-    <div class="level-item">
-      <button class="button" {{action toggleQueue}}>
-        <span class="icon">
-          {{fa-icon 'list'}}
-        </span>
-      </button>
+
+    <div class="level-right">
+      <div class="level-item player__controls">
+        <div class="field is-grouped">
+          <p class="control is-hidden-mobile">
+            <button class="button" {{action skip 'prev'}} disabled={{not queue.hasPrevious}}>
+              <span class="icon">
+                {{fa-icon 'step-backward'}}
+              </span>
+            </button>
+          </p>
+          <p class="control">
+            <button class="button is-primary" {{action togglePause}}>
+              <span class="icon">
+                {{fa-icon (if hifi.isPlaying 'pause' 'play')}}
+              </span>
+            </button>
+          </p>
+          <p class="control is-hidden-mobile">
+            <button class="button" {{action skip 'next'}} disabled={{not queue.hasNext}}>
+              <span class="icon">
+                {{fa-icon 'step-forward'}}
+              </span>
+            </button>
+          </p>
+        </div>
+      </div>
+      <div class="level-item is-hidden-mobile">
+        <time>{{format-time hifi.position}}</time>
+      </div>
+      <div class="level-item player__progress is-hidden-mobile">
+        <progress class="progress is-primary" value={{progression}} max="100">{{progression}}%</progress>
+      </div>
+      <div class="level-item is-hidden-mobile">
+        <time>{{format-time hifi.duration}}</time>
+      </div>
+      <div class="level-item is-hidden-mobile">
+        {{player/volume-controls
+          muted=hifi.isMuted
+          volume=hifi.volume
+          onvolumechange=(action (mut hifi.volume))
+          onmutechange=(action toggleMute)}}
+      </div>
     </div>
   </div>
 </div>
 
-{{#if showQueue}}
-  <div class="queue">
-    <h2>Queue</h2>
-    <ol>
-      {{#each queue.tracks as |track index|}}
-        <li>
-          {{#if (eq index queue.index)}}
-            <strong>
-              <span>{{track.title}}</span>
-            </strong>
-          {{else}}
-            <span>{{track.title}}</span>
-          {{/if}}
-        </li>
-      {{/each}}
-    </ol>
-  </div>
-{{/if}}

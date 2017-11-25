@@ -1,7 +1,11 @@
-@import "node_modules/bulma/bulma";
-@import 'slider';
+@import "node_modules/bulma/sass/utilities/initial-variables";
 
-body > .ember-view {
+$box-radius: 0;
+
+@import "node_modules/bulma/bulma";
+@import "node_modules/bulma-slider/slider";
+
+body > .ember-view:not(.ember-tether) {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -12,18 +16,26 @@ body > .ember-view {
 }
 
 footer.box {
-  border-radius: 0;
-  padding: .5rem 0;
+  padding: .5rem;
 }
 
 .player {
   .level-left {
-    flex-grow: 1;
-    margin-right: 1.5rem
+
+    @include tablet {
+    }
+  }
+
+  .level-right {
+    @include tablet {
+      order: -1;
+      flex-grow: 1;
+      margin-right: 1.5rem;
+    }
   }
 
   &__progress,  {
-    flex-grow: 1;
+    flex-grow: 2!important;
   }
 
   &__volume {
@@ -31,7 +43,40 @@ footer.box {
   }
 
   &__track {
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  &__queue {
+    position: absolute;
+    bottom: 70px;
+    right: 0px;
+    width: 360px;
+    height: 480px;
+  }
+}
+
+.card.ember-popover {
+  padding: 0;
+
+  // .card-content {
+  //   padding: 0;
+  // }
+}
+
+.queue__track {
+  height: 48px;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  & > .media {
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  &--current, &:hover {
+    background-color: $light;
   }
 }

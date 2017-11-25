@@ -1,9 +1,11 @@
 import Component from "@ember/component";
 import { inject } from "@ember/service";
-import { computed, get, getProperties } from "@ember/object";
+import { computed, get, getProperties, set } from "@ember/object";
 
 export default Component.extend({
-  classNames: ['player'],
+  tagName: 'footer',
+  classNames: ['box', 'player'],
+  classNameBindings: ['hasNoCurrent:is-invisible'],
 
   hifi: inject(),
   queue: inject(),
@@ -11,6 +13,7 @@ export default Component.extend({
   showQueue: false,
 
   current: computed.oneWay('queue.current'),
+  hasNoCurrent: computed.none('current'),
   title: computed.alias('current.title'),
 
   progression: computed('hifi.position', 'hifi.duration', function() {
@@ -43,6 +46,10 @@ export default Component.extend({
     this.toggleProperty('showQueue');
   },
 
+  hideQueue() {
+    this.set('showQueue', false);
+  },
+
   skip(direction) {
     const queue = get(this, 'queue');
     const { hasPrevious, hasNext } = getProperties(queue, 'hasPrevious', 'hasNext');
@@ -61,4 +68,19 @@ export default Component.extend({
       });
     });
   },
+
+  skipTo(index) {
+    const queue = get(this, 'queue');
+
+    set(queue, 'index', index);
+
+    let file = get(queue, 'current.file');
+
+    this.get('hifi').load(file).then(({sound}) => {
+      sound.play({
+        position: 0
+      });
+    });
+
+  }
 });
