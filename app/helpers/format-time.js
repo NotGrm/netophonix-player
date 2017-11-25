@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 export function formatTime(time) {
   let secs = Math.floor(time / 1000);
@@ -8,4 +8,4 @@ export function formatTime(time) {
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
-export default Ember.Helper.helper(formatTime);
+export default helper(formatTime);

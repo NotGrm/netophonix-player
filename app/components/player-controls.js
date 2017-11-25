@@ -1,3 +1,4 @@
+import { oneWay, alias } from '@ember/object/computed';
 import Component from "@ember/component";
 import { inject } from "@ember/service";
 import { computed, get, getProperties } from "@ember/object";
@@ -10,8 +11,8 @@ export default Component.extend({
 
   showQueue: false,
 
-  current: computed.oneWay('queue.current'),
-  title: computed.alias('current.title'),
+  current: oneWay('queue.current'),
+  title: alias('current.title'),
 
   progression: computed('hifi.position', 'hifi.duration', function() {
     const position = get(this, 'hifi.position');
