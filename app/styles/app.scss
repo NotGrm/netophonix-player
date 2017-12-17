@@ -44,3 +44,42 @@ footer.box {
     
   cursor: pointer;
 }
+
+
+.saga-list {
+  display: grid;
+  grid-gap: .75rem;
+
+  $colors: danger, success, warning, light, info, dark, primary;
+
+  @for $i from 1 through 10 {
+    $color: nth($colors, ($i % length($colors)) + 1);
+
+    .saga-tile:nth-child(#{$i}) {
+      @extend .is-#{$color};
+    }
+  }
+}
+
+@media (min-width: $tablet) { 
+  .saga-list {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 150px);
+
+    grid-template-areas:  "a b c"
+                          "d e f"
+                          "g e f"
+                          "h h f"
+                          "i j j";
+
+    $areas: a, b, c, d, e, f, g, h, i, j;
+
+    @for $i from 1 through length($areas) {
+      $area: nth($areas, $i);
+
+      .saga-tile:nth-child(#{$i}) {
+        grid-area: $area;
+      }
+    }
+  }
+}
