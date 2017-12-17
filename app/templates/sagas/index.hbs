@@ -1,43 +1,5 @@
-<div class="content">
-  <div class="tile is-ancestor">
-    {{#parent-tile model 0 as |object|}}
-      {{saga-tile object color='danger'}}
-    {{/parent-tile}}
-    {{#parent-tile model 1 as |object|}}
-      {{saga-tile object color='success'}}
-    {{/parent-tile}}
-    {{#parent-tile model 2 as |object|}}
-      {{saga-tile object color='warning'}}
-    {{/parent-tile}}
-  </div>
-
-  <div class="tile is-ancestor">
-    <div class="tile is-vertical is-8">
-      <div class="tile">
-        {{#parent-tile model (array 3 4) vertical=true as |objects|}}
-          {{#each objects as |object|}}
-            {{saga-tile object color='light'}}
-          {{/each}}
-        {{/parent-tile}}
-        {{#parent-tile model 5 as |object|}}
-          {{saga-tile object color='info'}}
-        {{/parent-tile}}
-      </div>
-      {{#parent-tile model 6 as |object|}}
-        {{saga-tile object color='dark'}}
-      {{/parent-tile}}
-    </div>
-    {{#parent-tile model 7 as |object|}}
-      {{saga-tile object color='primary'}}
-    {{/parent-tile}}
-  </div>
-
-  <div class="tile is-ancestor">
-    {{#parent-tile model 8 as |object|}}
-      {{saga-tile object color='warning'}}
-    {{/parent-tile}}
-    {{#parent-tile model 9 size=8 as |object|}}
-      {{saga-tile object color='info'}}
-    {{/parent-tile}}
-  </div>
+<div class="content saga-list">
+  {{#each model as |saga|}}
+    {{saga-tile saga}}
+  {{/each}}
 </div>
