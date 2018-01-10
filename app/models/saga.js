@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import {alias} from '@ember/object/computed';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
@@ -9,4 +10,7 @@ export default DS.Model.extend({
   genre: DS.attr('string'),
 
   episodes: DS.hasMany('episode'),
+
+  firstEpisodeReleadeDate: alias('episodes.firstObject.createdAt'),
+  lastEpisodeReleadeDate: alias('episodes.lastObject.createdAt'),
 });
