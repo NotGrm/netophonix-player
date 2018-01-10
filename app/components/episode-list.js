@@ -4,7 +4,8 @@ import { inject } from "@ember/service";
 import { get, getProperties, set } from "@ember/object";
 
 export default Component.extend({
-  classNames: ['content'],
+  tagName: 'table',
+  classNames: ['table', 'is-fullwidth', 'is-narrow'],
 
   hifi: inject(),
   queue: inject(),
