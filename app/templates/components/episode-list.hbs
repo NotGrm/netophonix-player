@@ -1,15 +1,19 @@
-<div class="content">
-  <ol>
-    {{#each episodes as |episode index|}}
-      <li>
+<tbody>
+  {{#each episodes as |episode index|}}
+    <tr>
+      <td class="is-size-5">
+        {{inc index}}.
+      </td>
+      <td class="is-size-5">
         {{episode.title}}
-
+      </td>
+      <td class="has-text-right">
         <button class="button is-primary is-small" {{action play index}}>
-          <span class="icon is-small">
+          <span class="icon">
             {{fa-icon 'play'}}
           </span>
         </button>
-      </li>
-    {{/each}}
-  </ol>
-</div>
+      </td>
+    </tr>
+  {{/each}}
+</tbody>
