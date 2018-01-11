@@ -1,3 +1,4 @@
+import { oneWay, alias, none } from '@ember/object/computed';
 import Component from "@ember/component";
 import { inject } from "@ember/service";
 import { computed, get, getProperties, set } from "@ember/object";
@@ -12,9 +13,9 @@ export default Component.extend({
 
   showQueue: false,
 
-  current: computed.oneWay('queue.current'),
-  hasNoCurrent: computed.none('current'),
-  title: computed.alias('current.title'),
+  current: oneWay('queue.current'),
+  hasNoCurrent: none('current'),
+  title: alias('current.title'),
 
   progression: computed('hifi.position', 'hifi.duration', function() {
     const position = get(this, 'hifi.position');
@@ -60,7 +61,7 @@ export default Component.extend({
       this.incrementProperty('queue.index');
     }
 
-    let file = get(this, 'current.file');
+    let file = get(this, 'current.src');
 
     this.get('hifi').load(file).then(({sound}) => {
       sound.play({

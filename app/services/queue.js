@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Service from '@ember/service';
 import { computed, get, getProperties } from "@ember/object";
 
-export default Ember.Service.extend({
+export default Service.extend({
   tracks: [],
   index: 0,
 

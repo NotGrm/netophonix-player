@@ -1,0 +1,76 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      {{#link-to 'sagas'}}
+        Sagas
+      {{/link-to}}
+    </li>
+    <li class="is-active">
+      {{#link-to 'sagas.show' model aria-current='page'}}
+        {{model.name}}
+      {{/link-to}}
+    </li>
+  </ul>
+</nav>
+
+<section>
+  <h1 class="title is-1">
+    {{model.name}}
+    <span class="tag is-medium {{if (eq model.status 'ongoing') 'is-success' 'is-danger'}}">
+      {{capitalize model.status}}
+    </span>
+  </h1>
+  <div class="columns is-mobile">
+    <div class="column is-two-thirds-tablet is-three-quarters-widescreen">
+      <div class="content">
+        <p>{{model.synopsis}}</p>
+      </div>
+    </div>
+    <div class="column is-hidden-mobile">
+      <nav class="panel">
+        <p class="panel-heading">
+          Details
+        </p>
+        <div class="panel-block">
+          <span class="panel-icon">
+            {{fa-icon 'hashtag'}}
+          </span>
+            Genre: {{model.genre}}
+        </div>
+        <div class="panel-block">
+          <span class="panel-icon">
+            {{fa-icon 'calendar'}}
+          </span>
+          First release: {{moment-format model.firstEpisodeReleadeDate 'D MMM YYYY'}}
+        </div>
+        <div class="panel-block">
+          <span class="panel-icon">
+            {{fa-icon 'calendar'}}
+          </span>
+          Latest release: {{moment-format model.lastEpisodeReleadeDate 'D MMM YYYY'}}
+        </div>
+        <div class="panel-block">
+          <span class="panel-icon">
+            {{fa-icon 'globe'}}
+          </span>
+          <a href={{model.website}} target="_blank">
+            {{model.website}}
+            {{fa-icon 'external-link'}}
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<div class="columns">
+  <div class="column">
+    <div class="is-divider" data-content="Episodes"></div>
+  </div>
+</div>
+
+<section>
+  {{episode-list episodes=model.episodes}}
+</section>
+
+{{outlet}}
